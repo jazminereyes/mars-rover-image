@@ -31,18 +31,22 @@ class Rover:
             if not os.path.exists(folder):
                 os.makedirs(folder)
 
-            print('%s\nDownloading images...' % self.date.strftime('%Y-%m-%d'))
             file_path = None
-            for photo in data['photos']:
+
+            # Get first photo
+            if data['photos']:
+                print('%s\nDownloading image...' % self.date.strftime('%Y-%m-%d'))
+                photo = data['photos'][0]
                 file_name = photo['img_src'].split('/')[-1]
                 file_path = os.path.join(folder, file_name)
 
                 if not os.path.exists(file_path):
+                    print(file_name)
                     urllib.request.urlretrieve(photo['img_src'], file_path)
-            
-            print('Downloaded %s images.' % len(data['photos']))
+            else:
+                print('%s\nNo image to download.' % self.date.strftime('%Y-%m-%d'))
 
             if file_path:
-                # Opens last downloaded photo
+                # Opens the downloaded photo
                 webbrowser.open(file_path)
     
